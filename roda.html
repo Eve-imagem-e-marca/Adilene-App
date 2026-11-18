@@ -1,34 +1,84 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Roda do bem-estar</title><meta name="theme-color" content="#6d2036"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="stylesheet" href="style.css">
-<style>input[type=range]{padding:0;height:36px;accent-color:#6d2036;border:0;background:none;margin-bottom:6px}.lin{display:flex;justify-content:space-between;font-size:17px;color:var(--marsala)}.lin b{font-weight:600}</style></head>
+<style>
+.palco{position:relative;max-width:340px;margin:6px auto 0}
+.palco svg{width:100%;display:block;overflow:visible}
+#giro{transform-origin:170px 170px;transition:transform 4.2s cubic-bezier(.12,.7,.1,1)}
+.cel{cursor:pointer;transition:fill .25s,transform .2s;transform-origin:170px 170px}
+.cel:active{opacity:.8}
+.ponteiro{position:absolute;left:50%;top:-6px;transform:translateX(-50%);width:0;height:0;border-left:13px solid transparent;border-right:13px solid transparent;border-top:24px solid var(--marsala);z-index:2;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25))}
+.legenda{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0 4px}
+.legenda div{background:var(--branco);border:1px solid var(--linha);border-radius:12px;padding:8px 10px;font-size:15px;color:var(--marsala);display:flex;justify-content:space-between;align-items:center}
+.legenda b{font-weight:600}
+.dica{text-align:center;font-size:17px;margin:8px 0 0;color:var(--marsala2)}
+@keyframes pulso{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.pulsa{animation:pulso 1.4s infinite}
+</style></head>
 <body><div class="wrap">
 <div class="topo"><a class="voltar" href="index.html">‹</a><span class="nome">Adilene Carvalho</span></div>
 <h1>Roda do bem-estar</h1>
-<p style="margin:8px 0 16px">Dê uma nota de 0 a 10 para cada área da sua vida hoje.</p>
-<div class="card" id="sl"></div>
-<div class="card" style="text-align:center"><svg id="rd" viewBox="0 0 300 300" width="100%" style="max-width:320px"></svg>
-<p id="dica" style="margin-top:6px"></p>
-<a class="btn" href="cadastro.html?i=Psicoterapia&m=Fiz%20a%20roda%20do%20bem-estar">Quero conversar sobre isso</a></div>
+<p class="dica" id="dica">Toque em cada fatia: quanto mais para fora, melhor está essa área.</p>
+<div class="palco">
+  <div class="ponteiro"></div>
+  <svg viewBox="0 0 340 340" id="svg" aria-label="Roda do bem-estar"><g id="giro"></g></svg>
+</div>
+<div class="legenda" id="leg"></div>
+<button class="btn" id="gira">Girar a roda 🌸</button>
+<button class="btn claro" id="zera">Recomeçar</button>
+<div class="card fade" id="res" style="display:none;text-align:center;margin-top:16px"></div>
 <p class="aviso">Conteúdo de orientação geral. Não substitui atendimento psicológico.</p>
 <p class="rodape">Feito por Corage produtos digitais</p>
 </div>
+<div class="toast" id="toast"></div>
 <script>
-var A=['Relacionamentos','Lazer e hobbies','Saúde e corpo','Emoções','Descanso','Propósito'];
-var V=[5,5,5,5,5,5];
-try{var s=JSON.parse(localStorage.getItem('adi_roda'));if(s&&s.length==6)V=s}catch(e){}
-var sl=document.getElementById('sl');
-A.forEach(function(a,k){var d=document.createElement('div');d.innerHTML='<div class="lin"><span>'+a+'</span><b id="n'+k+'">'+V[k]+'</b></div><input type="range" min="0" max="10" value="'+V[k]+'">';
- d.querySelector('input').oninput=function(){V[k]=+this.value;document.getElementById('n'+k).textContent=V[k];try{localStorage.setItem('adi_roda',JSON.stringify(V))}catch(e){}des()};sl.appendChild(d)});
-function des(){
- var c=150,R=110,n=6,s='';
- [0.33,0.66,1].forEach(function(f){var p=[];for(var k=0;k<n;k++){var a=-Math.PI/2+k*2*Math.PI/n;p.push((c+R*f*Math.cos(a)).toFixed(1)+','+(c+R*f*Math.sin(a)).toFixed(1))}s+='<polygon points="'+p.join(' ')+'" fill="none" stroke="#ecd6d6"/>'});
- var q=[];for(var k=0;k<n;k++){var a=-Math.PI/2+k*2*Math.PI/n,r=R*V[k]/10;q.push((c+r*Math.cos(a)).toFixed(1)+','+(c+r*Math.sin(a)).toFixed(1));
-  s+='<text x="'+(c+(R+22)*Math.cos(a)).toFixed(1)+'" y="'+(c+(R+22)*Math.sin(a)+4).toFixed(1)+'" font-size="11" text-anchor="middle" fill="#6d2036">'+(k+1)+'</text>'}
- s+='<polygon points="'+q.join(' ')+'" fill="rgba(138,47,71,.35)" stroke="#6d2036" stroke-width="2"/>';
- document.getElementById('rd').innerHTML=s;
- var m=0;for(var k=1;k<n;k++)if(V[k]<V[m])m=k;
- document.getElementById('dica').innerHTML='Área que mais pede carinho agora: <b>'+(m+1)+'. '+A[m]+'</b>';
+var A=[
+ ['💞','Relacionamentos','Marque um café ou uma conversa sem pressa com alguém querido.'],
+ ['🎨','Lazer e hobbies','Reserve 20 minutos hoje para algo que você faz só por prazer.'],
+ ['🌿','Saúde e corpo','Escolha um movimento gentil hoje: caminhar, alongar ou dançar.'],
+ ['💭','Emoções','Escreva o que você está sentindo, sem julgar. Dê nome ao sentimento.'],
+ ['🌙','Descanso','Proteja um horário de pausa hoje, sem telas, só para você.'],
+ ['✨','Propósito','Anote uma coisa que faz sentido para você e um passo pequeno nela.']];
+var COR=['#6d2036','#8a2f47','#a8465c','#c46a7c','#d98e9b','#b5586d'];
+var N=6,NIV=5,CX=170,CY=170,R0=26,R1=126,W=(R1-R0)/NIV;
+var V=[0,0,0,0,0,0],rot=0,girando=false;
+try{var s=JSON.parse(localStorage.getItem('adi_roda2'));if(s&&s.length==6)V=s}catch(e){}
+function pt(r,a){var t=(a-90)*Math.PI/180;return[(CX+r*Math.cos(t)).toFixed(2),(CY+r*Math.sin(t)).toFixed(2)]}
+function arco(r0,r1,a0,a1){var p1=pt(r1,a0),p2=pt(r1,a1),p3=pt(r0,a1),p4=pt(r0,a0);
+ return'M'+p1+' A'+r1+' '+r1+' 0 0 1 '+p2+' L'+p3+' A'+r0+' '+r0+' 0 0 0 '+p4+' Z'}
+var g=document.getElementById('giro'),h='';
+for(var k=0;k<N;k++){var a0=k*60-30+1.2,a1=k*60+30-1.2;
+ for(var l=1;l<=NIV;l++){h+='<path class="cel" data-k="'+k+'" data-l="'+l+'" d="'+arco(R0+(l-1)*W+1,R0+l*W-1,a0,a1)+'" fill="#f8e6e6"/>'}
+ var e=pt(R1+22,k*60);h+='<text x="'+e[0]+'" y="'+(+e[1]+8)+'" font-size="22" text-anchor="middle">'+A[k][0]+'</text>'}
+h+='<circle cx="170" cy="170" r="'+(R0-3)+'" fill="#6d2036"/><text x="170" y="177" font-size="20" text-anchor="middle" fill="#f8e6e6">🌸</text>';
+g.innerHTML=h;
+var cels=g.querySelectorAll('.cel');
+function pinta(){
+ cels.forEach(function(c){var k=+c.dataset.k,l=+c.dataset.l;c.setAttribute('fill',l<=V[k]?COR[k]:'#f8e6e6')});
+ var L='';A.forEach(function(a,k){L+='<div><span>'+a[0]+' '+a[1]+'</span><b>'+(V[k]?V[k]+'/5':'–')+'</b></div>'});
+ document.getElementById('leg').innerHTML=L;
+ var ok=V.every(function(x){return x>0});
+ document.getElementById('gira').classList.toggle('pulsa',ok&&!girando);
+ try{localStorage.setItem('adi_roda2',JSON.stringify(V))}catch(e){}
 }
-des();
+function aviso(t){var x=document.getElementById('toast');x.textContent=t;x.classList.add('on');setTimeout(function(){x.classList.remove('on')},2200)}
+cels.forEach(function(c){c.addEventListener('click',function(){
+ if(girando)return;var k=+c.dataset.k,l=+c.dataset.l;V[k]=(V[k]==l&&l==1)?0:l;
+ c.style.transform='scale(1.04)';setTimeout(function(){c.style.transform=''},180);
+ document.getElementById('res').style.display='none';pinta();
+ if(navigator.vibrate)navigator.vibrate(8)})});
+document.getElementById('gira').onclick=function(){
+ if(girando)return;
+ if(!V.every(function(x){return x>0})){aviso('Toque em todas as 6 fatias primeiro');return}
+ var m=Math.min.apply(null,V),c=[];V.forEach(function(x,k){if(x==m)c.push(k)});
+ var t=c[Math.floor(Math.random()*c.length)];
+ girando=true;document.getElementById('res').style.display='none';
+ var base=Math.ceil(rot/360)*360;rot=base+360*5+(360-t*60)%360;
+ g.style.transform='rotate('+rot+'deg)';pinta();
+ setTimeout(function(){girando=false;pinta();
+  var a=A[t],r=document.getElementById('res');
+  r.innerHTML='<div style="font-size:46px">'+a[0]+'</div><div class="rotulo">A roda parou em</div><h2>'+a[1]+'</h2><p>Hoje, esta área pede um pouco mais de carinho.</p><p style="margin-top:8px"><b>Sugestão:</b> '+a[2]+'</p><a class="btn" href="cadastro.html?i=Psicoterapia&m=Fiz%20a%20roda%20do%20bem-estar%3A%20'+encodeURIComponent(a[1])+'">Quero conversar sobre isso</a>';
+  r.style.display='block';r.scrollIntoView({behavior:'smooth',block:'center'})},4300)};
+document.getElementById('zera').onclick=function(){if(girando)return;V=[0,0,0,0,0,0];document.getElementById('res').style.display='none';pinta()};
+pinta();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){})}
 </script></body></html>
