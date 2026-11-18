@@ -1,4 +1,4 @@
-var C='adi-v6';
+var C='adi-v7';
 var F=['index.html','quiz.html','roda.html','hobby.html','desafio.html','adocao.html','passeios.html','ikigai.html','cadastro.html','style.css','foto.jpg','qr.png','manifest.webmanifest'];
 self.addEventListener('install',function(e){e.waitUntil(caches.open(C).then(function(c){return c.addAll(F)}));self.skipWaiting()});
 self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(k){return Promise.all(k.filter(function(n){return n!==C}).map(function(n){return caches.delete(n)}))}));self.clients.claim()});
