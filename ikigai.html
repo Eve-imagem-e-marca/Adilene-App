@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ikigai</title><meta name="theme-color" content="#6d2036"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="stylesheet" href="style.css">
+<style>.ven{max-width:340px;margin:0 auto}.ven svg{width:100%}.item{background:var(--blush);border-radius:12px;padding:10px 14px;margin-bottom:8px;font-size:16px}.item b{color:var(--marsala);display:block;font-size:14px;letter-spacing:1px;text-transform:uppercase}</style></head>
+<body><div class="wrap">
+<div class="topo"><a class="voltar" href="index.html">‹</a><span class="nome">Adilene Carvalho</span></div>
+<div id="t"></div>
+<p class="aviso">Conteúdo de orientação geral. Não substitui atendimento psicológico.</p>
+<p class="rodape">Feito por Corage produtos digitais</p>
+</div>
+<script>
+var Q=[
+["💗","O que você ama","O que te faz perder a noção do tempo?","#e8b4b8"],
+["🌟","No que você é boa","O que as pessoas elogiam em você?","#c46a7c"],
+["🌍","O que o mundo precisa","Que ajuda você gostaria de levar às pessoas?","#a8465c"],
+["💼","Pelo que você pode ser paga","O que alguém pagaria para você fazer?","#6d2036"]];
+var R=[["","",""],["","",""],["","",""],["","",""]],p=0,t=document.getElementById('t');
+try{var s=JSON.parse(localStorage.getItem('adi_ikigai'));if(s&&s.length==4)R=s}catch(e){}
+function salva(){try{localStorage.setItem('adi_ikigai',JSON.stringify(R))}catch(e){}}
+function esc(x){return x.replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function ver(){
+ if(p>=4)return fim();
+ var q=Q[p];
+ var h='<div class="rotulo">Passo '+(p+1)+' de 4</div><div class="barra"><i style="width:'+(p/4*100)+'%"></i></div><div style="font-size:46px">'+q[0]+'</div><h2>'+q[1]+'</h2><p style="margin-bottom:12px">'+q[2]+' Escreva até 3 palavras ou frases curtas.</p>';
+ for(var k=0;k<3;k++)h+='<input maxlength="40" data-k="'+k+'" value="'+esc(R[p][k])+'" placeholder="'+(k+1)+'">';
+ h+='<button class="btn" id="pr">'+(p==3?'Ver meu Ikigai':'Continuar')+'</button>'+(p?'<button class="btn claro" id="vo">Voltar</button>':'');
+ t.innerHTML='<div class="fade">'+h+'</div>';
+ t.querySelectorAll('input').forEach(function(i){i.oninput=function(){R[p][+i.dataset.k]=i.value;salva()}});
+ document.getElementById('pr').onclick=function(){p++;scrollTo(0,0);ver()};
+ if(p)document.getElementById('vo').onclick=function(){p--;ver()};
+}
+function fim(){
+ var h='<div class="rotulo">Seu Ikigai</div><h2>Sua razão de ser</h2><p style="margin-bottom:12px">Ikigai é o encontro entre o que você ama, faz bem, o mundo precisa e pode render.</p>'+
+ '<div class="ven"><svg viewBox="0 0 300 300"><g fill-opacity=".55">'+
+ '<circle cx="150" cy="95" r="70" fill="#e8b4b8"/><circle cx="205" cy="150" r="70" fill="#c46a7c"/><circle cx="150" cy="205" r="70" fill="#a8465c"/><circle cx="95" cy="150" r="70" fill="#6d2036"/></g>'+
+ '<g font-size="11" text-anchor="middle" fill="#3a1220"><text x="150" y="60">Amo</text><text x="248" y="153">Sou boa</text><text x="150" y="250">Mundo precisa</text><text x="52" y="153">Posso ser paga</text></g>'+
+ '<circle cx="150" cy="150" r="22" fill="#fffdfc"/><text x="150" y="157" font-size="20" text-anchor="middle">🌸</text></svg></div>';
+ Q.forEach(function(q,k){var v=R[k].filter(function(x){return x.trim()}).map(esc);h+='<div class="item"><b>'+q[0]+' '+q[1]+'</b>'+(v.length?v.join(' · '):'–')+'</div>'});
+ h+='<p style="margin:12px 0">Olhe onde as respostas se repetem. Ali mora o seu caminho.</p><a class="btn" href="cadastro.html?i=Psicoterapia&m=Fiz%20o%20Ikigai">Quero conversar sobre meu Ikigai</a><button class="btn claro" id="re">Refazer</button>';
+ t.innerHTML='<div class="fade">'+h+'</div>';
+ document.getElementById('re').onclick=function(){R=[["","",""],["","",""],["","",""],["","",""]];salva();p=0;ver()};
+}
+ver();
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){})}
+</script></body></html>
