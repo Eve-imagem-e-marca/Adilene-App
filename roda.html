@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Roda do bem-estar</title><meta name="theme-color" content="#6d2036"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="stylesheet" href="style.css">
+<style>input[type=range]{padding:0;height:36px;accent-color:#6d2036;border:0;background:none;margin-bottom:6px}.lin{display:flex;justify-content:space-between;font-size:17px;color:var(--marsala)}.lin b{font-weight:600}</style></head>
+<body><div class="wrap">
+<div class="topo"><a class="voltar" href="index.html">‹</a><span class="nome">Adilene Carvalho</span></div>
+<h1>Roda do bem-estar</h1>
+<p style="margin:8px 0 16px">Dê uma nota de 0 a 10 para cada área da sua vida hoje.</p>
+<div class="card" id="sl"></div>
+<div class="card" style="text-align:center"><svg id="rd" viewBox="0 0 300 300" width="100%" style="max-width:320px"></svg>
+<p id="dica" style="margin-top:6px"></p>
+<a class="btn" href="cadastro.html?i=Psicoterapia&m=Fiz%20a%20roda%20do%20bem-estar">Quero conversar sobre isso</a></div>
+<p class="aviso">Conteúdo de orientação geral. Não substitui atendimento psicológico.</p>
+<p class="rodape">Feito por Corage produtos digitais</p>
+</div>
+<script>
+var A=['Relacionamentos','Lazer e hobbies','Saúde e corpo','Emoções','Descanso','Propósito'];
+var V=[5,5,5,5,5,5];
+try{var s=JSON.parse(localStorage.getItem('adi_roda'));if(s&&s.length==6)V=s}catch(e){}
+var sl=document.getElementById('sl');
+A.forEach(function(a,k){var d=document.createElement('div');d.innerHTML='<div class="lin"><span>'+a+'</span><b id="n'+k+'">'+V[k]+'</b></div><input type="range" min="0" max="10" value="'+V[k]+'">';
+ d.querySelector('input').oninput=function(){V[k]=+this.value;document.getElementById('n'+k).textContent=V[k];try{localStorage.setItem('adi_roda',JSON.stringify(V))}catch(e){}des()};sl.appendChild(d)});
+function des(){
+ var c=150,R=110,n=6,s='';
+ [0.33,0.66,1].forEach(function(f){var p=[];for(var k=0;k<n;k++){var a=-Math.PI/2+k*2*Math.PI/n;p.push((c+R*f*Math.cos(a)).toFixed(1)+','+(c+R*f*Math.sin(a)).toFixed(1))}s+='<polygon points="'+p.join(' ')+'" fill="none" stroke="#ecd6d6"/>'});
+ var q=[];for(var k=0;k<n;k++){var a=-Math.PI/2+k*2*Math.PI/n,r=R*V[k]/10;q.push((c+r*Math.cos(a)).toFixed(1)+','+(c+r*Math.sin(a)).toFixed(1));
+  s+='<text x="'+(c+(R+22)*Math.cos(a)).toFixed(1)+'" y="'+(c+(R+22)*Math.sin(a)+4).toFixed(1)+'" font-size="11" text-anchor="middle" fill="#6d2036">'+(k+1)+'</text>'}
+ s+='<polygon points="'+q.join(' ')+'" fill="rgba(138,47,71,.35)" stroke="#6d2036" stroke-width="2"/>';
+ document.getElementById('rd').innerHTML=s;
+ var m=0;for(var k=1;k<n;k++)if(V[k]<V[m])m=k;
+ document.getElementById('dica').innerHTML='Área que mais pede carinho agora: <b>'+(m+1)+'. '+A[m]+'</b>';
+}
+des();
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){})}
+</script></body></html>

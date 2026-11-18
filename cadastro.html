@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Falar com a Adilene</title><meta name="theme-color" content="#6d2036"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="stylesheet" href="style.css"></head>
+<body><div class="wrap">
+<div class="topo"><a class="voltar" href="index.html">‹</a><span class="nome">Adilene Carvalho</span></div>
+<h1>Falar com a Adilene</h1>
+<p style="margin:8px 0 16px">Deixe seus dados e ela entra em contato.</p>
+<div id="form">
+<form id="f" class="card">
+<label for="nome">Seu nome</label><input id="nome" required autocomplete="name">
+<label for="zap">WhatsApp</label><input id="zap" type="tel" required autocomplete="tel" placeholder="(11) 90000-0000">
+<label for="email">E-mail</label><input id="email" type="email" autocomplete="email">
+<label for="int">Assunto</label>
+<select id="int"><option>Psicoterapia</option><option>Terapia de casal</option><option>Adoção</option><option>Mentoria Livre, Leve e Plena</option><option>Palestras</option><option>Presente do desafio</option><option>Outro</option></select>
+<label for="msg">Mensagem (opcional)</label><textarea id="msg" rows="3"></textarea>
+<label class="check"><input type="checkbox" id="ok" required><span>Autorizo o uso dos meus dados apenas para contato. Não informe dados de saúde.</span></label>
+<button class="btn" type="submit">Enviar</button>
+</form>
+<div class="card" id="pend" style="display:none"><p>O envio está sendo conectado. Por enquanto, fale pelo WhatsApp ou e-mail abaixo.</p></div>
+</div>
+<div class="card fade" id="fim" style="display:none;text-align:center"><h2>Recebido! 🌸</h2><p>A Adilene vai entrar em contato em breve.</p><a class="btn" href="index.html">Voltar ao início</a></div>
+<details><summary>Outros contatos</summary><p>WhatsApp: (11) 92760-7667<br>E-mail: psicoadilenecarvalho@gmail.com<br>Instagram: @psicoadilenecarvalho</p></details>
+<iframe name="ifr" style="display:none" title=""></iframe>
+<p class="rodape">Feito por Corage produtos digitais</p>
+</div>
+<script>
+var FORM_URL='';var ENTRY={nome:'',zap:'',email:'',int:'',msg:''};
+var q=new URLSearchParams(location.search);
+if(q.get('i')){var s=document.getElementById('int'),v=q.get('i'),ach=false;for(var k=0;k<s.options.length;k++)if(s.options[k].text==v){s.selectedIndex=k;ach=true}if(!ach){var o=new Option(v,v);s.add(o);s.value=v}}
+if(q.get('m'))document.getElementById('msg').value=q.get('m');
+if(!FORM_URL)document.getElementById('pend').style.display='block';
+document.getElementById('f').onsubmit=function(e){
+ e.preventDefault();
+ if(!FORM_URL){document.getElementById('pend').scrollIntoView();return}
+ var h=document.createElement('form');h.method='POST';h.action=FORM_URL;h.target='ifr';
+ var c={nome:'nome',zap:'zap',email:'email',int:'int',msg:'msg'};
+ for(var k in c){var i=document.createElement('input');i.type='hidden';i.name=ENTRY[k];i.value=document.getElementById(c[k]).value.trim()||'-';h.appendChild(i)}
+ [['fvv','1'],['pageHistory','0']].forEach(function(p){var i=document.createElement('input');i.type='hidden';i.name=p[0];i.value=p[1];h.appendChild(i)});
+ document.body.appendChild(h);h.submit();
+ document.getElementById('form').style.display='none';document.getElementById('fim').style.display='block';
+};
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){})}
+</script></body></html>

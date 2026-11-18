@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Como andam suas relações?</title><meta name="theme-color" content="#6d2036"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="stylesheet" href="style.css"></head>
+<body><div class="wrap">
+<div class="topo"><a class="voltar" href="index.html">‹</a><span class="nome">Adilene Carvalho</span></div>
+<div id="tela"></div>
+<p class="aviso">Conteúdo de orientação geral. Não substitui atendimento psicológico.</p>
+<p class="rodape">Feito por Corage produtos digitais</p>
+</div>
+<script>
+var P=[
+["Você consegue dizer o que sente para quem é importante para você?",["Quase sempre","Às vezes","Raramente"]],
+["Depois de estar com as pessoas que ama, você se sente…",["Leve e em paz","Meio misturada","Cansada ou tensa"]],
+["Você tem tempo só seu, sem culpa?",["Sim, protejo esse tempo","Pouco","Quase nunca"]],
+["Quando há um conflito, você…",["Conversa com calma","Evita o assunto","Explode ou se cala"]],
+["Você sente que é escutada?",["Sim","Em parte","Não"]],
+["Você consegue dizer não sem se sentir mal?",["Consigo","Depende","Tenho muita dificuldade"]]];
+var i=0,pts=0,t=document.getElementById('tela');
+function ver(){
+ if(i>=P.length)return fim();
+ var q=P[i];
+ var h='<div class="rotulo">Pergunta '+(i+1)+' de '+P.length+'</div><div class="barra"><i style="width:'+(i/P.length*100)+'%"></i></div><h2>'+q[0]+'</h2>';
+ q[1].forEach(function(o,k){h+='<button class="opcao" data-k="'+k+'">'+o+'</button>'});
+ t.innerHTML='<div class="fade">'+h+'</div>';
+ t.querySelectorAll('.opcao').forEach(function(b){b.onclick=function(){pts+=2-(+b.dataset.k);i++;ver()}});
+}
+function fim(){
+ var r,tx;
+ if(pts>=9){r='Relações em equilíbrio 🌸';tx='Você cuida bem dos seus vínculos e de si. Continue protegendo o que faz bem.'}
+ else if(pts>=5){r='Há pontos para cuidar 🌷';tx='Suas relações têm coisas boas e outras que pedem atenção. Escolha uma conversa ou um limite para começar.'}
+ else{r='Hora de se acolher 🤍';tx='Parece que você tem carregado muito. Você não precisa fazer isso sozinha: conversar com uma psicóloga pode ajudar.'}
+ t.innerHTML='<div class="fade card"><div class="rotulo">Seu resultado</div><h2>'+r+'</h2><p>'+tx+'</p>'+
+ '<a class="btn" href="cadastro.html?i=Psicoterapia&m=Fiz%20o%20quiz%20de%20rela%C3%A7%C3%B5es">Quero conversar com a Adilene</a>'+
+ '<button class="btn claro" onclick="i=0;pts=0;ver()">Refazer</button></div>'+
+ '<details><summary>Se você vive violência</summary><p>Se alguém te machuca, humilha ou ameaça, procure ajuda. No Brasil, o Ligue 180 atende mulheres, de graça e a qualquer hora. Em perigo imediato, ligue 190.</p></details>';
+}
+ver();
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){})}
+</script></body></html>

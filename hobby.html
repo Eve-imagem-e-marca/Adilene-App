@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pausa leve</title><meta name="theme-color" content="#6d2036"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="stylesheet" href="style.css"></head>
+<body><div class="wrap">
+<div class="topo"><a class="voltar" href="index.html">‹</a><span class="nome">Adilene Carvalho</span></div>
+<h1>Pausa leve</h1>
+<p style="margin:8px 0 16px">Escolha quanto tempo você tem e receba uma ideia de hobby.</p>
+<label for="tempo">Tempo disponível</label>
+<select id="tempo"><option value="0">10 minutos</option><option value="1">30 minutos</option><option value="2">1 hora ou mais</option></select>
+<div class="card fade" id="ideia" style="text-align:center"></div>
+<button class="btn" id="outra">Outra ideia</button>
+<a class="btn claro" href="cadastro.html?i=Psicoterapia&m=Quero%20mais%20leveza%20na%20rotina">Quero mais leveza na rotina</a>
+<p class="aviso">Conteúdo de orientação geral. Não substitui atendimento psicológico.</p>
+<p class="rodape">Feito por Corage produtos digitais</p>
+</div>
+<script>
+var I=[
+[["🎧","Ouça uma música inteira de olhos fechados."],["✍️","Escreva 3 coisas boas do seu dia."],["🌿","Regue uma planta ou olhe uma pela janela."],["☕","Tome um chá sem o celular."],["🖍️","Rabisque algo sem se preocupar com o resultado."]],
+[["🚶","Caminhe ao redor do quarteirão, sem pressa."],["📖","Leia dez páginas de um livro de que você gosta."],["🍪","Prepare uma receita simples só para você."],["🎶","Monte uma playlist de músicas que te acalmam."],["📷","Fotografe três coisas bonitas do seu caminho."]],
+[["🎨","Pinte, desenhe ou faça colagem."],["🧶","Comece um trabalho manual: crochê, bordado, argila."],["🌳","Passeie num parque ou jardim."],["🎬","Veja um filme de que você gosta, sem culpa."],["👭","Convide alguém querido para um café."]]];
+var t=document.getElementById('tempo'),c=document.getElementById('ideia'),u=-1;
+function sorteia(){var l=I[+t.value],k;do{k=Math.floor(Math.random()*l.length)}while(k==u&&l.length>1);u=k;
+ c.classList.remove('fade');void c.offsetWidth;c.classList.add('fade');
+ c.innerHTML='<div style="font-size:54px">'+l[k][0]+'</div><h3 style="margin-top:8px">'+l[k][1]+'</h3>'}
+t.onchange=function(){u=-1;sorteia()};document.getElementById('outra').onclick=sorteia;sorteia();
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){})}
+</script></body></html>
