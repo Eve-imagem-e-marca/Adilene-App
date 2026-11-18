@@ -4,10 +4,21 @@
 <body><div class="wrap">
 <div class="topo"><a class="voltar" href="index.html">‹</a><span class="nome">Adilene Carvalho</span></div>
 <div id="t"></div>
+<h2 style="margin:30px 0 12px">Entenda o Ikigai</h2>
+<details><summary>O que é Ikigai?</summary><p>É uma palavra japonesa. Vem de <i>iki</i> (vida) e <i>gai</i> (valor, resultado). Significa algo como "razão de viver" ou "aquilo que faz a vida valer a pena".</p><p>Não precisa ser algo grandioso. Pode ser um café tranquilo de manhã, encontrar amigos ou um grande objetivo.</p></details>
+<details><summary>De onde vem</summary><p>A ideia é antiga na cultura japonesa. Ficou conhecida por um livro de 1966, <i>Ikigai ni tsuite</i> ("Sobre o sentido da vida"), da psiquiatra japonesa Mieko Kamiya. Para ela, o ikigai é pessoal: cada pessoa encontra o seu.</p></details>
+<details><summary>E o diagrama de 4 círculos?</summary><p>Esse desenho famoso <b>não</b> é japonês. Foi criado em 2011 pelo espanhol Andrés Zuzunaga, como um "diagrama de propósito". Em 2014, o blogueiro Marc Winn trocou a palavra do centro por "ikigai" e o desenho se espalhou.</p><p>Por isso, use o diagrama como uma <b>ferramenta para refletir</b>, e não como a definição original. No sentido japonês, o ikigai nem sempre tem a ver com dinheiro.</p></details>
+<details><summary>O que a ciência diz</summary><p>Um grande estudo no Japão (Ohsaki) acompanhou mais de 43 mil adultos por 7 anos. Quem dizia não ter ikigai teve maior risco de morte do que quem tinha.</p><p>Isso mostra uma <b>associação</b>, não prova que o ikigai, sozinho, faz viver mais. Também se sugere que o sentido de vida ajude na longevidade de Okinawa, mas isso é uma hipótese.</p></details>
+<details><summary>Fontes</summary><p style="font-size:15px">
+• Sone et al., "Sense of life worth living (Ikigai) and mortality in Japan: Ohsaki Study", Psychosomatic Medicine, 2008.<br>
+• Ikigai Tribe: origem do diagrama (Zuzunaga e Marc Winn).<br>
+• Mieko Kamiya, <i>Ikigai ni tsuite</i>, 1966.<br>
+• Wikipédia (em inglês): verbete "Ikigai".</p></details>
 <p class="aviso">Conteúdo de orientação geral. Não substitui atendimento psicológico.</p>
 <p class="rodape">Feito por Corage produtos digitais</p>
 </div>
 <script>
+document.querySelectorAll('details').forEach(function(d){d.addEventListener('toggle',function(){if(d.open)document.querySelectorAll('details').forEach(function(o){if(o!==d)o.open=false})})});
 var Q=[
 ["💗","O que você ama","O que te faz perder a noção do tempo?","#e8b4b8"],
 ["🌟","No que você é boa","O que as pessoas elogiam em você?","#c46a7c"],
@@ -29,7 +40,7 @@ function ver(){
  if(p)document.getElementById('vo').onclick=function(){p--;ver()};
 }
 function fim(){
- var h='<div class="rotulo">Seu Ikigai</div><h2>Sua razão de ser</h2><p style="margin-bottom:12px">Ikigai é o encontro entre o que você ama, faz bem, o mundo precisa e pode render.</p>'+
+ var h='<div class="rotulo">Seu Ikigai</div><h2>Sua razão de ser</h2><p style="margin-bottom:12px">Um exercício para refletir sobre o que dá sentido à sua vida. Não é uma resposta pronta.</p>'+
  '<div class="ven"><svg viewBox="0 0 300 300"><g fill-opacity=".55">'+
  '<circle cx="150" cy="95" r="70" fill="#e8b4b8"/><circle cx="205" cy="150" r="70" fill="#c46a7c"/><circle cx="150" cy="205" r="70" fill="#a8465c"/><circle cx="95" cy="150" r="70" fill="#6d2036"/></g>'+
  '<g font-size="11" text-anchor="middle" fill="#3a1220"><text x="150" y="60">Amo</text><text x="248" y="153">Sou boa</text><text x="150" y="250">Mundo precisa</text><text x="52" y="153">Posso ser paga</text></g>'+
