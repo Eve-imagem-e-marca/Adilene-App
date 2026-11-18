@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Passeios grátis em São Paulo</title><meta name="theme-color" content="#6d2036"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="stylesheet" href="style.css"></head>
+<body><div class="wrap">
+<div class="topo"><a class="voltar" href="index.html">‹</a><span class="nome">Adilene Carvalho</span></div>
+<h1>Passeios grátis em São Paulo</h1>
+<p style="margin:8px 0 14px">Ideias de lazer leve para sair da rotina, sem gastar.</p>
+<label for="tipo">O que você quer hoje?</label>
+<select id="tipo"><option value="">Tudo</option><option>Natureza</option><option>Arte e cultura</option><option>Para ir acompanhada</option></select>
+<div id="lista"></div>
+<p class="aviso">Horários e regras podem mudar. Confira antes de sair.</p>
+<a class="btn" href="cadastro.html?i=Psicoterapia&m=Quero%20mais%20leveza%20na%20rotina">Quero mais leveza na rotina</a>
+<p class="aviso">Conteúdo de orientação geral. Não substitui atendimento psicológico.</p>
+<p class="rodape">Feito por Corage produtos digitais</p>
+</div>
+<script>
+var P=[
+["🌳","Parque Ibirapuera","Natureza","Caminhe, sente na grama e respire. Vá no fim da tarde."],
+["🌿","Parque Villa-Lobos","Natureza","Bom para pedalar, ler ao ar livre ou fazer um piquenique."],
+["🦜","Parque da Água Branca","Natureza","Um pedacinho de roça na cidade, com bichos e sombra."],
+["🌇","Praça do Pôr do Sol","Para ir acompanhada","Leve alguém querido e veja o pôr do sol na Vila Madalena."],
+["🚶","Avenida Paulista aos domingos","Para ir acompanhada","A avenida fecha para carros: caminhe, veja música e arte de rua."],
+["🎨","Beco do Batman","Arte e cultura","Grafites coloridos para passear e fotografar."],
+["📚","Biblioteca Mário de Andrade","Arte e cultura","Um refúgio no centro para ler e folhear livros."],
+["🍇","Mercado Municipal","Para ir acompanhada","Entrada livre. Passeie pelos cheiros e cores e divida um lanche."],
+["🌺","Parque da Luz","Natureza","Jardim histórico no centro, perfeito para uma pausa."]];
+var l=document.getElementById('lista'),t=document.getElementById('tipo');
+function ver(){var h='';P.forEach(function(p){if(t.value&&p[2]!=t.value)return;h+='<details><summary>'+p[0]+' '+p[1]+'</summary><p>'+p[3]+'</p><p style="font-size:14px;color:#947a7f">'+p[2]+'</p></details>'});l.innerHTML=h||'<p>Nada por aqui ainda.</p>';
+ l.querySelectorAll('details').forEach(function(d){d.addEventListener('toggle',function(){if(d.open)l.querySelectorAll('details').forEach(function(o){if(o!==d)o.open=false})})})}
+t.onchange=ver;ver();
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){})}
+</script></body></html>
